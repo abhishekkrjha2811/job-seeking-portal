@@ -1,79 +1,104 @@
-import { FaBuilding, FaSuitcase, FaUsers, FaUserPlus } from "react-icons/fa";
+import React from "react";
+import { FaBuilding, FaSuitcase, FaUsers, FaUserPlus, FaArrowRight, FaPlay } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import '../../css/HeroSection.css';
 
 const HeroSection = () => {
-  const details = [
+  const statistics = [
     {
       id: 1,
-      title: "1,23,441",
-      subTitle: "Live Jobs",
+      number: "1,23,441",
+      label: "Live Jobs",
       icon: <FaSuitcase />,
     },
     {
       id: 2,
-      title: "91,220",
-      subTitle: "Companies",
+      number: "91,220",
+      label: "Companies",
       icon: <FaBuilding />,
     },
     {
       id: 3,
-      title: "2,34,200",
-      subTitle: "Job Seekers",
+      number: "2,34,200",
+      label: "Job Seekers",
       icon: <FaUsers />,
     },
     {
       id: 4,
-      title: "1,03,761",
-      subTitle: "Employers",
+      number: "1,03,761",
+      label: "Employers",
       icon: <FaUserPlus />,
     },
   ];
 
+  const trustedCompanies = [
+    "Google", "Microsoft", "Apple", "Amazon", "Meta"
+  ];
+
   return (
-    <div className="heroSection bg-gradient-to-r from-blue-500 to-green-500 text-white py-16">
-      <div className="container mx-auto px-6 flex flex-col md:flex-row items-center">
-        {/* Title Section */}
-        <div className="title md:w-1/2 text-center md:text-left">
-          <h1 className=" font-bold mb-6">
-            Find a job that suits
-          </h1>
-          <h1 className=" font-bold mb-6 ">
-            your interests and skills
-          </h1>
-          <p className="text-lg md:text-xl text-gray-200 mb-8">
-            Discover career opportunities tailored to your unique strengths.
-            Whether you're starting out or seeking a new path, find jobs that
-            align with your passions, expertise, and goals. Explore thousands
-            of listings, connect with top employers, and take control of your
-            future by choosing a role that truly fits you.
-          </p>
-        </div>
+    <section className="hero-section">
+      {/* Floating Background Elements */}
+      <div className="hero-floating-element">💼</div>
+      <div className="hero-floating-element">🚀</div>
+      <div className="hero-floating-element">📊</div>
+      <div className="hero-floating-element">🎯</div>
 
-        {/* Image Section */}
-        <div className="image md:w-1/2 mt-8 md:mt-0">
-          <img
-            src="/heroS.jpg"
-            alt="hero"
-            className="rounded-lg shadow-lg w-full"
-          />
-        </div>
-      </div>
-
-      {/* Details Section */}
-      <div className="details grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-12 px-6">
-        {details.map((element) => (
-          <div
-            className="card bg-white text-gray-800 rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition duration-300"
-            key={element.id}
-          >
-            <div className="icon text-4xl text-blue-500 mb-4">{element.icon}</div>
-            <div className="content">
-              <p className="text-2xl font-bold">{element.title}</p>
-              <p className="text-gray-600">{element.subTitle}</p>
+      <div className="hero-content">
+        <div className="hero-main">
+          <div className="hero-text">
+            <p className="hero-subtitle">Professional Career Platform</p>
+            <h1 className="hero-title">
+              Find Your Dream Career
+              <br />
+              With Top Employers
+            </h1>
+            <p className="hero-description">
+              Connect with leading companies and discover opportunities that match your skills, 
+              experience, and career aspirations. Join thousands of professionals who have 
+              found their perfect role through our platform.
+            </p>
+            
+            <div className="hero-actions">
+              <Link to="/jobs" className="hero-btn hero-btn-primary">
+                <span>Explore Jobs</span>
+                <FaArrowRight />
+              </Link>
+              <Link to="/register" className="hero-btn hero-btn-secondary">
+                <FaPlay />
+                <span>How it Works</span>
+              </Link>
             </div>
           </div>
-        ))}
+          
+          <div className="hero-image">
+            <img src="/heroS.jpg" alt="Professional career opportunities" />
+          </div>
+        </div>
+
+        {/* Statistics Section */}
+        <div className="hero-stats">
+          {statistics.map((stat) => (
+            <div className="hero-stat-card" key={stat.id}>
+              <div className="hero-stat-icon">{stat.icon}</div>
+              <div className="hero-stat-number">{stat.number}</div>
+              <div className="hero-stat-label">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Trust Indicators */}
+        <div className="hero-trust">
+          <p className="hero-trust-text">Trusted by professionals at</p>
+          <div className="hero-trust-logos">
+            {trustedCompanies.map((company, index) => (
+              <div key={index} className="hero-trust-logo">
+                {company}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -2,6 +2,18 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../../main";
+import { 
+  FiBriefcase, 
+  FiMapPin, 
+  FiDollarSign, 
+  FiFileText, 
+  FiBuilding, 
+  FiGlobe,
+  FiClock,
+  FiUser,
+  FiArrowRight
+} from "react-icons/fi";
+import "../../css/JobDetails.css";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -21,58 +33,92 @@ const JobDetails = () => {
   }
 
   return (
-    <section className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-6">
-      <div className="max-w-4xl w-full bg-white shadow-xl rounded-lg p-10">
-        {/* Title */}
-        <h1 className=" font-bold text-blue-700 mb-8 text-center border-b-4 border-blue-500 pb-4">
-          Job Details
-        </h1>
-
-        {/* Job Details */}
-        <div className="space-y-6 text-gray-700 text-lg leading-relaxed">
-          <div>
-            <span className="font-semibold text-gray-800">Title:</span> {job.title}
-          </div>
-          <div>
-            <span className="font-semibold text-gray-800">Category:</span> {job.category}
-          </div>
-          <div>
-            <span className="font-semibold text-gray-800">Country:</span> {job.country}
-          </div>
-          <div>
-            <span className="font-semibold text-gray-800">City:</span> {job.city}
-          </div>
-          <div className="overflow-x-auto">
-            <span className="font-semibold text-gray-800">Location:</span>{" "}
-            <span className="inline-block break-words">{job.location}</span>
-          </div>
-          <div>
-            <span className="font-semibold text-gray-800">Description:</span>{" "}
-            <p className="mt-2 text-gray-600">{job.description}</p>
-          </div>
-          <div>
-            <span className="font-semibold text-gray-800">Posted On:</span>{" "}
-            {new Date(job.jobPostedOn).toLocaleDateString()}
-          </div>
-          <div>
-            <span className="font-semibold text-gray-800">Salary:</span>{" "}
-            {job.fixedSalary ? job.fixedSalary : `${job.salaryFrom} - ${job.salaryTo}`}
+    <div className="job-details-page">
+      <div className="job-details-container">
+        {/* Header Section */}
+        <div className="job-header">
+          <div className="job-header-content">
+            <h1 className="job-title">{job.title}</h1>
+            <div className="job-meta">
+              <div className="job-meta-item">
+                <FiBuilding className="job-meta-icon" />
+                <span>Company Position</span>
+              </div>
+              <div className="job-meta-item">
+                <FiMapPin className="job-meta-icon" />
+                <span>{job.city}, {job.country}</span>
+              </div>
+              <div className="job-meta-item">
+                <FiClock className="job-meta-icon" />
+                <span>Full Time</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Apply Button */}
-        {user && user.role !== "Employer" && (
-          <div className="mt-10 text-center">
-            <Link
-              to={`/application/${job._id}`}
-              className="inline-block bg-blue-600 text-white px-10 py-3 rounded-lg text-lg font-medium shadow-lg hover:bg-blue-700 hover:shadow-xl transition-transform transform hover:scale-105"
-            >
-              Apply Now
-            </Link>
+        {/* Main Content */}
+        <div className="job-content">
+          {/* Job Information Cards */}
+          <div className="job-info-grid">
+            <div className="job-info-card">
+              <div className="card-header">
+                <FiBriefcase className="card-icon" />
+                <h3>Job Category</h3>
+              </div>
+              <p className="card-content">{job.category}</p>
+            </div>
+
+            <div className="job-info-card">
+              <div className="card-header">
+                <FiMapPin className="card-icon" />
+                <h3>Location</h3>
+              </div>
+              <p className="card-content">{job.location}</p>
+            </div>
+
+            <div className="job-info-card">
+              <div className="card-header">
+                <FiGlobe className="card-icon" />
+                <h3>Country</h3>
+              </div>
+              <p className="card-content">{job.country}</p>
+            </div>
+
+            <div className="job-info-card salary-card">
+              <div className="card-header">
+                <FiDollarSign className="card-icon" />
+                <h3>Salary Range</h3>
+              </div>
+              <p className="card-content salary-amount">
+                {job.salaryFrom ? `$${job.salaryFrom} - $${job.salaryTo}` : `$${job.fixedSalary}`}
+              </p>
+            </div>
           </div>
-        )}
+
+          {/* Job Description */}
+          <div className="job-description-section">
+            <div className="section-header">
+              <FiFileText className="section-icon" />
+              <h2>Job Description</h2>
+            </div>
+            <div className="description-content">
+              <p>{job.description}</p>
+            </div>
+          </div>
+
+          {/* Apply Button */}
+          {user && user.role !== "Employer" && (
+            <div className="apply-section">
+              <Link to={`/application/${job._id}`} className="apply-btn">
+                <FiUser className="btn-icon" />
+                Apply for this Position
+                <FiArrowRight className="btn-arrow" />
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 

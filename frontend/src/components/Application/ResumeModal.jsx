@@ -1,4 +1,4 @@
-
+import '../../css/ResumeModal.css';
 
 const ResumeModal = ({ imageUrl, onClose }) => {
   return (

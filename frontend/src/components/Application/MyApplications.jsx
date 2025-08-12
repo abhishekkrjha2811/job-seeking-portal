@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
+import "../../css/MyApplications.css";
 
 const MyApplications = () => {
   const { user } = useContext(Context);
@@ -70,50 +71,52 @@ const MyApplications = () => {
 
   return (
     <section className="my_applications page">
-      {user && user.role === "Job Seeker" ? (
-        <div className="container">
-          <h1>My Applications</h1>
-          {applications.length <= 0 ? (
-            <>
-              {" "}
-              <h4>No Applications Found</h4>{" "}
-            </>
-          ) : (
-            applications.map((element) => {
-              return (
-                <JobSeekerCard
-                  element={element}
-                  key={element._id}
-                  deleteApplication={deleteApplication}
-                  openModal={openModal}
-                />
-              );
-            })
-          )}
-        </div>
-      ) : (
-        <div className="container">
-          <h1>Applications From Job Seekers</h1>
-          {applications.length <= 0 ? (
-            <>
-              <h4>No Applications Found</h4>
-            </>
-          ) : (
-            applications.map((element) => {
-              return (
-                <EmployerCard
-                  element={element}
-                  key={element._id}
-                  openModal={openModal}
-                />
-              );
-            })
-          )}
-        </div>
-      )}
-      {modalOpen && (
-        <ResumeModal imageUrl={resumeImageUrl} onClose={closeModal} />
-      )}
+      <div className="my-applications-container">
+        {user && user.role === "Job Seeker" ? (
+          <div className="container">
+            <h1>My Applications</h1>
+            {applications.length <= 0 ? (
+              <>
+                {" "}
+                <h4>No Applications Found</h4>{" "}
+              </>
+            ) : (
+              applications.map((element) => {
+                return (
+                  <JobSeekerCard
+                    element={element}
+                    key={element._id}
+                    deleteApplication={deleteApplication}
+                    openModal={openModal}
+                  />
+                );
+              })
+            )}
+          </div>
+        ) : (
+          <div className="container">
+            <h1>Applications From Job Seekers</h1>
+            {applications.length <= 0 ? (
+              <>
+                <h4>No Applications Found</h4>
+              </>
+            ) : (
+              applications.map((element) => {
+                return (
+                  <EmployerCard
+                    element={element}
+                    key={element._id}
+                    openModal={openModal}
+                  />
+                );
+              })
+            )}
+          </div>
+        )}
+        {modalOpen && (
+          <ResumeModal imageUrl={resumeImageUrl} onClose={closeModal} />
+        )}
+      </div>
     </section>
   );
 };
