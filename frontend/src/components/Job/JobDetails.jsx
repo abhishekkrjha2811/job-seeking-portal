@@ -7,7 +7,7 @@ import {
   FiMapPin, 
   FiDollarSign, 
   FiFileText, 
-  FiBuilding, 
+  FiHome, 
   FiGlobe,
   FiClock,
   FiUser,
@@ -41,7 +41,7 @@ const JobDetails = () => {
             <h1 className="job-title">{job.title}</h1>
             <div className="job-meta">
               <div className="job-meta-item">
-                <FiBuilding className="job-meta-icon" />
+                <FiHome className="job-meta-icon" />
                 <span>Company Position</span>
               </div>
               <div className="job-meta-item">
