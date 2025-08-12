@@ -2,65 +2,63 @@ import mongoose from "mongoose";
 import validator from "validator";
 
 const applicationSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:[true,"Please provide your name!"],
-        minlength:[3,"Name must contain at least 3 character!"],
-        maxlength:[30,"Name cannot exceed 30 characters!"],
+  name: {
+    type: String,
+    required: [true, "Please enter your Name!"],
+    minLength: [3, "Name must contain at least 3 Characters!"],
+    maxLength: [30, "Name cannot exceed 30 Characters!"],
+  },
+  email: {
+    type: String,
+    required: [true, "Please enter your Email!"],
+    validate: [validator.isEmail, "Please provide a valid Email!"],
+  },
+  coverLetter: {
+    type: String,
+    required: [true, "Please provide a cover letter!"],
+  },
+  phone: {
+    type: Number,
+    required: [true, "Please enter your Phone Number!"],
+  },
+  address: {
+    type: String,
+    required: [true, "Please enter your Address!"],
+  },
+  resume: {
+    public_id: {
+      type: String, 
+      required: true,
     },
-    email:{
-        type:String,
-        validator:[validator.isEmail,"Please provide a valid email!"],
-        required:[true,"Please provide your email id!"],
+    url: {
+      type: String, 
+      required: true,
     },
-    coverLetter:{
-        type:String,
-        required:[true,"Please provide your cover letter!"],  
+  },
+  applicantID: {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    phone:{
-        type:Number,
-        required:[true,"Please provide your phone number!"], 
+    role: {
+      type: String,
+      enum: ["Job Seeker"],
+      required: true,
     },
-    address:{
-        type:String,
-        required:[true,"Please provide your address!"],
+  },
+  employerID: {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    resume:{
-        public_id:{
-            type:String,
-            required:true
-        },
-        url:{
-            type:String,
-            required:true
-        }
-
+    role: {
+      type: String,
+      enum: ["Employer"],
+      required: true,
     },
-    applicantID:{
-        user:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"user",
-            required:true
-        },
-        role:{
-            type:String,
-            enum:["Job seeker"],
-            required:true
-        }
-
-    },
-    employerID:{
-        user:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"user",
-            required:true
-        },
-        role:{
-            type:String,
-            enum:["Employer"],
-            required:true
-        }
-    }
+  },
 });
 
 export const Application = mongoose.model("Application", applicationSchema);

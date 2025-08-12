@@ -1,4 +1,3 @@
-import React from "react";
 import {
   MdOutlineDesignServices,
   MdOutlineWebhook,
@@ -33,7 +32,7 @@ const PopularCategories = () => {
     {
       id: 4,
       title: "MERN STACK Development",
-      subTitle: "1000+ Open Postions",
+      subTitle: "1000+ Open Positions",
       icon: <FaReact />,
     },
     {
@@ -61,21 +60,33 @@ const PopularCategories = () => {
       icon: <IoGameController />,
     },
   ];
+
   return (
-    <div className="categories">
-      <h3>POPULAR CATEGORIES</h3>
-      <div className="banner">
-        {categories.map((element) => {
-          return (
-            <div className="card" key={element.id}>
-              <div className="icon">{element.icon}</div>
+    <div className="categories bg-gray-100 py-16">
+      <div className="container mx-auto px-6">
+        {/* Title */}
+        <h3 className=" font-bold text-center text-gray-800 mb-12">
+          Popular Categories
+        </h3>
+
+        {/* Cards Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {categories.map((element) => (
+            <div className="card bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition duration-300"
+              key={element.id}
+            >
+              <div className="icon text-5xl text-blue-500 mb-4">
+                {element.icon}
+              </div>
               <div className="text">
-                <p>{element.title}</p>
-                <p>{element.subTitle}</p>
+                <p className="text-xl font-semibold text-gray-800 mb-2">
+                  {element.title}
+                </p>
+                <p className="text-gray-600">{element.subTitle}</p>
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </div>
   );

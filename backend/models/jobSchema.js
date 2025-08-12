@@ -1,65 +1,63 @@
 import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema({
-    title:{
-        type:String,
-        required:[true,"Please provide job tittle"],
-        minlength:[3,"Job title must contain at least 3 characters!"],
-    },
-    description:{
-        type:String,
-        required:[true,"Please provide job description"],
-        minlength:[50,"Job description must contain at least 50 characters!"],
-        maxlength:[350,"Job description cannot exceed 350 characters!"],
-    },
-    category:{
-        type:String,
-        required:[true,"job category is required"],
-    },
-    country:{
-        type:String,
-        required:[true,"Job country is required!"],
-
-    },
-    city:{
-        type:String,
-        required:[true,"Job city is required!"],
-
-    },
-    location:{
-        type:String,
-        required:[true,"Please provide exact location!"],
-        minlength:[50,"Job location must contain at least 50 characters!"],
-    },
-    fixedSalary:{
-        type:Number,
-        minlength:[4,"Fixed salary must contain at least 4 digits!"],
-        maxlength:[9,"Fixed salary cannot exceed 9 digits!"],
-    },
-    salaryFrom:{
-        type:Number,
-        minlength:[4,"Fixed from must contain at least 4 digits!"],
-        maxlength:[9,"Fixed from cannot exceed 9 digits!"],
-    },
-    salaryTo:{
-        type:Number,
-        minlength:[4,"Fixed must contain at least 4 digits!"],
-        maxlength:[9,"Fixed cannot exceed 9 digits!"],
-    },
-    expired:{
-        type:Boolean,
-        default:false,
-    },
-    jobPostedOn:{
-        type:Date,
-        default:Date.now,
-    },
-    postedBy:{
-        type:mongoose.Schema.ObjectId,
-        ref:"User",
-        required:true,
-    },
-    
+  title: {
+    type: String,
+    required: [true, "Please provide a title."],
+    minLength: [3, "Title must contain at least 3 Characters!"],
+    maxLength: [30, "Title cannot exceed 30 Characters!"],
+  },
+  description: {
+    type: String,
+    required: [true, "Please provide descriptions."],
+    minLength: [30, "Description must contain at least 30 Characters!"],
+    maxLength: [500, "Description cannot exceed 500 Characters!"],
+  },
+  category: {
+    type: String,
+    required: [true, "Please provide a category."],
+  },
+  country: {
+    type: String,
+    required: [true, "Please provide a country name."],
+  },
+  city: {
+    type: String,
+    required: [true, "Please provide a city name."],
+  },
+  location: {
+    type: String,
+    required: [true, "Please provide location."],
+    minLength: [20, "Location must contain at least 20 characters!"],
+  },
+  fixedSalary: {
+    type: Number,
+    minLength: [4, "Salary must contain at least 4 digits"],
+    maxLength: [9, "Salary cannot exceed 9 digits"],
+  },
+  salaryFrom: {
+    type: Number,
+    minLength: [4, "Salary must contain at least 4 digits"],
+    maxLength: [9, "Salary cannot exceed 9 digits"],
+  },
+  salaryTo: {
+    type: Number,
+    minLength: [4, "Salary must contain at least 4 digits"],
+    maxLength: [9, "Salary cannot exceed 9 digits"],
+  },
+  expired: {
+    type: Boolean,
+    default: false,
+  },
+  jobPostedOn: {
+    type: Date,
+    default: Date.now,
+  },
+  postedBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
-export const Job = mongoose.model("Job",jobSchema);
+export const Job = mongoose.model("Job", jobSchema);
