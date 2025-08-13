@@ -5,7 +5,20 @@ import { FaCheck } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { Context } from "../../main";
 import { useNavigate } from "react-router-dom";
-import "../../css/MyJobs.css";
+import { 
+  FiBriefcase, 
+  FiMapPin, 
+  FiDollarSign, 
+  FiEdit3, 
+  FiTrash2, 
+  FiClock,
+  FiGlobe,
+  FiHome,
+  FiList,
+  FiAlertCircle,
+  FiCheckCircle,
+  FiXCircle
+} from "react-icons/fi";
 
 const MyJobs = () => {
   const [myJobs, setMyJobs] = useState([]);
@@ -13,6 +26,7 @@ const MyJobs = () => {
   const { isAuthorized, user } = useContext(Context);
 
   const navigateTo = useNavigate();
+
   //Fetching all jobs
   useEffect(() => {
     const fetchJobs = async () => {
@@ -29,13 +43,13 @@ const MyJobs = () => {
     };
     fetchJobs();
   }, []);
+
   if (!isAuthorized || (user && user.role !== "Employer")) {
     navigateTo("/");
   }
 
   //Function For Enabling Editing Mode
   const handleEnableEdit = (jobId) => {
-    //Here We Are Giving Id in setEditingMode because We want to enable only that job whose ID has been send.
     setEditingMode(jobId);
   };
 
@@ -76,7 +90,6 @@ const MyJobs = () => {
   };
 
   const handleInputChange = (jobId, field, value) => {
-    // Update the job object in the jobs state with the new value
     setMyJobs((prevJobs) =>
       prevJobs.map((job) =>
         job._id === jobId ? { ...job, [field]: value } : job
@@ -84,271 +97,333 @@ const MyJobs = () => {
     );
   };
 
+  const categoryOptions = [
+    "Graphics & Design",
+    "Mobile App Development",
+    "Frontend Web Development", 
+    "MERN Stack Development",
+    "Account & Finance",
+    "Artificial Intelligence",
+    "Video Animation",
+    "MEAN Stack Development",
+    "MEVN Stack Development",
+    "Data Entry Operator"
+  ];
+
   return (
-    <section className="my-jobs-container">
-      <div className="container">
-        <h1 className="my-jobs-title">Your Posted Jobs</h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Your Posted Jobs</h1>
+          <p className="text-gray-600 mt-2">
+            Manage and edit your job postings
+          </p>
+        </div>
+
         {myJobs.length > 0 ? (
-          <>
-            <div className="banner">
-              {myJobs.map((element) => (
-                <div className="card" key={element._id}>
-                  <div className="content">
-                    <div className="short_fields">
-                      <div>
-                        <span>Title:</span>
-                        <input
-                          type="text"
-                          disabled={
-                            editingMode !== element._id ? true : false
-                          }
-                          value={element.title}
-                          onChange={(e) =>
-                            handleInputChange(
-                              element._id,
-                              "title",
-                              e.target.value
-                            )
-                          }
-                        />
+          <div className="grid gap-6">
+            {myJobs.map((element) => (
+              <div key={element._id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                <div className="p-6">
+                  {/* Header with Job Title and Status */}
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <FiBriefcase className="w-5 h-5 text-blue-600" />
+                        <label className="text-sm font-medium text-gray-500">Job Title</label>
                       </div>
+                      <input
+                        type="text"
+                        disabled={editingMode !== element._id}
+                        value={element.title}
+                        onChange={(e) =>
+                          handleInputChange(element._id, "title", e.target.value)
+                        }
+                        className={`text-xl font-semibold w-full ${
+                          editingMode === element._id
+                            ? "border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            : "bg-transparent border-none outline-none text-gray-900"
+                        }`}
+                      />
+                    </div>
+                    <div className="ml-4">
+                      {element.expired ? (
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                          <FiXCircle className="w-4 h-4 mr-1" />
+                          Expired
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                          <FiCheckCircle className="w-4 h-4 mr-1" />
+                          Active
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Main Content Grid */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    {/* Left Column - Basic Info */}
+                    <div className="space-y-4">
+                      {/* Country */}
                       <div>
-                        {" "}
-                        <span>Country:</span>
+                        <div className="flex items-center space-x-2 mb-2">
+                          <FiGlobe className="w-4 h-4 text-blue-600" />
+                          <label className="text-sm font-medium text-gray-500">Country</label>
+                        </div>
                         <input
                           type="text"
-                          disabled={
-                            editingMode !== element._id ? true : false
-                          }
+                          disabled={editingMode !== element._id}
                           value={element.country}
                           onChange={(e) =>
-                            handleInputChange(
-                              element._id,
-                              "country",
-                              e.target.value
-                            )
+                            handleInputChange(element._id, "country", e.target.value)
                           }
+                          className={`w-full ${
+                            editingMode === element._id
+                              ? "border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              : "bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900"
+                          }`}
                         />
                       </div>
+
+                      {/* City */}
                       <div>
-                        <span>City:</span>
+                        <div className="flex items-center space-x-2 mb-2">
+                          <FiHome className="w-4 h-4 text-blue-600" />
+                          <label className="text-sm font-medium text-gray-500">City</label>
+                        </div>
                         <input
                           type="text"
-                          disabled={
-                            editingMode !== element._id ? true : false
-                          }
+                          disabled={editingMode !== element._id}
                           value={element.city}
                           onChange={(e) =>
-                            handleInputChange(
-                              element._id,
-                              "city",
-                              e.target.value
-                            )
+                            handleInputChange(element._id, "city", e.target.value)
                           }
+                          className={`w-full ${
+                            editingMode === element._id
+                              ? "border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              : "bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900"
+                          }`}
                         />
                       </div>
+
+                      {/* Category */}
                       <div>
-                        <span>Category:</span>
+                        <div className="flex items-center space-x-2 mb-2">
+                          <FiList className="w-4 h-4 text-blue-600" />
+                          <label className="text-sm font-medium text-gray-500">Category</label>
+                        </div>
                         <select
                           value={element.category}
                           onChange={(e) =>
-                            handleInputChange(
-                              element._id,
-                              "category",
-                              e.target.value
-                            )
+                            handleInputChange(element._id, "category", e.target.value)
                           }
-                          disabled={
-                            editingMode !== element._id ? true : false
-                          }
+                          disabled={editingMode !== element._id}
+                          className={`w-full ${
+                            editingMode === element._id
+                              ? "border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              : "bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900"
+                          }`}
                         >
-                          <option value="Graphics & Design">
-                            Graphics & Design
-                          </option>
-                          <option value="Mobile App Development">
-                            Mobile App Development
-                          </option>
-                          <option value="Frontend Web Development">
-                            Frontend Web Development
-                          </option>
-                          <option value="MERN Stack Development">
-                            MERN STACK Development
-                          </option>
-                          <option value="Account & Finance">
-                            Account & Finance
-                          </option>
-                          <option value="Artificial Intelligence">
-                            Artificial Intelligence
-                          </option>
-                          <option value="Video Animation">
-                            Video Animation
-                          </option>
-                          <option value="MEAN Stack Development">
-                            MEAN STACK Development
-                          </option>
-                          <option value="MEVN Stack Development">
-                            MEVN STACK Development
-                          </option>
-                          <option value="Data Entry Operator">
-                            Data Entry Operator
-                          </option>
+                          {categoryOptions.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
                         </select>
                       </div>
+
+                      {/* Status */}
                       <div>
-                        <span>
-                          Salary:{" "}
-                          {element.fixedSalary ? (
-                            <input
-                              type="number"
-                              disabled={
-                                editingMode !== element._id ? true : false
-                              }
-                              value={element.fixedSalary}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  element._id,
-                                  "fixedSalary",
-                                  e.target.value
-                                )
-                              }
-                            />
-                          ) : (
-                            <div>
-                              <input
-                                type="number"
-                                disabled={
-                                  editingMode !== element._id ? true : false
-                                }
-                                value={element.salaryFrom}
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    element._id,
-                                    "salaryFrom",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                              <input
-                                type="number"
-                                disabled={
-                                  editingMode !== element._id ? true : false
-                                }
-                                value={element.salaryTo}
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    element._id,
-                                    "salaryTo",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                            </div>
-                          )}
-                        </span>
-                      </div>
-                      <div>
-                        {" "}
-                        <span>Expired:</span>
+                        <div className="flex items-center space-x-2 mb-2">
+                          <FiClock className="w-4 h-4 text-blue-600" />
+                          <label className="text-sm font-medium text-gray-500">Status</label>
+                        </div>
                         <select
                           value={element.expired}
                           onChange={(e) =>
-                            handleInputChange(
-                              element._id,
-                              "expired",
-                              e.target.value
-                            )
+                            handleInputChange(element._id, "expired", e.target.value === "true")
                           }
-                          disabled={
-                            editingMode !== element._id ? true : false
-                          }
+                          disabled={editingMode !== element._id}
+                          className={`w-full ${
+                            editingMode === element._id
+                              ? "border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              : "bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900"
+                          }`}
                         >
-                          <option value={true}>TRUE</option>
-                          <option value={false}>FALSE</option>
+                          <option value={false}>Active</option>
+                          <option value={true}>Expired</option>
                         </select>
                       </div>
                     </div>
-                    <div className="long_field">
+
+                    {/* Right Column - Salary */}
+                    <div className="space-y-4">
                       <div>
-                        <span>Description:</span>{" "}
-                        <textarea
-                          rows={5}
-                          value={element.description}
-                          disabled={
-                            editingMode !== element._id ? true : false
-                          }
-                          onChange={(e) =>
-                            handleInputChange(
-                              element._id,
-                              "description",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
-                      <div>
-                        <span>Location: </span>
-                        <textarea
-                          value={element.location}
-                          rows={5}
-                          disabled={
-                            editingMode !== element._id ? true : false
-                          }
-                          onChange={(e) =>
-                            handleInputChange(
-                              element._id,
-                              "location",
-                              e.target.value
-                            )
-                          }
-                        />
+                        <div className="flex items-center space-x-2 mb-2">
+                          <FiDollarSign className="w-4 h-4 text-blue-600" />
+                          <label className="text-sm font-medium text-gray-500">Salary</label>
+                        </div>
+                        {element.fixedSalary ? (
+                          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <p className="text-sm text-green-800 mb-2">Fixed Salary</p>
+                            <input
+                              type="number"
+                              disabled={editingMode !== element._id}
+                              value={element.fixedSalary}
+                              onChange={(e) =>
+                                handleInputChange(element._id, "fixedSalary", e.target.value)
+                              }
+                              className={`w-full text-lg font-semibold ${
+                                editingMode === element._id
+                                  ? "border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  : "bg-transparent border-none outline-none text-green-900"
+                              }`}
+                            />
+                          </div>
+                        ) : (
+                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <p className="text-sm text-blue-800 mb-2">Salary Range</p>
+                            <div className="space-y-3">
+                              <div>
+                                <label className="text-xs text-blue-600">From</label>
+                                <input
+                                  type="number"
+                                  disabled={editingMode !== element._id}
+                                  value={element.salaryFrom}
+                                  onChange={(e) =>
+                                    handleInputChange(element._id, "salaryFrom", e.target.value)
+                                  }
+                                  className={`w-full ${
+                                    editingMode === element._id
+                                      ? "border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      : "bg-transparent border-none outline-none text-blue-900"
+                                  }`}
+                                />
+                              </div>
+                              <div>
+                                <label className="text-xs text-blue-600">To</label>
+                                <input
+                                  type="number"
+                                  disabled={editingMode !== element._id}
+                                  value={element.salaryTo}
+                                  onChange={(e) =>
+                                    handleInputChange(element._id, "salaryTo", e.target.value)
+                                  }
+                                  className={`w-full ${
+                                    editingMode === element._id
+                                      ? "border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      : "bg-transparent border-none outline-none text-blue-900"
+                                  }`}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
-                  {/* Out Of Content Class */}
-                  <div className="button_wrapper">
-                    <div className="edit_btn_wrapper">
+
+                  {/* Description and Location */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <div className="flex items-center space-x-2 mb-2">
+                        <FiEdit3 className="w-4 h-4 text-blue-600" />
+                        <label className="text-sm font-medium text-gray-500">Description</label>
+                      </div>
+                      <textarea
+                        rows={5}
+                        value={element.description}
+                        disabled={editingMode !== element._id}
+                        onChange={(e) =>
+                          handleInputChange(element._id, "description", e.target.value)
+                        }
+                        className={`w-full resize-none ${
+                          editingMode === element._id
+                            ? "border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            : "bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900"
+                        }`}
+                      />
+                    </div>
+
+                    <div>
+                      <div className="flex items-center space-x-2 mb-2">
+                        <FiMapPin className="w-4 h-4 text-blue-600" />
+                        <label className="text-sm font-medium text-gray-500">Location</label>
+                      </div>
+                      <textarea
+                        value={element.location}
+                        rows={5}
+                        disabled={editingMode !== element._id}
+                        onChange={(e) =>
+                          handleInputChange(element._id, "location", e.target.value)
+                        }
+                        className={`w-full resize-none ${
+                          editingMode === element._id
+                            ? "border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            : "bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900"
+                        }`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+                    <div className="flex items-center space-x-3">
                       {editingMode === element._id ? (
                         <>
                           <button
                             onClick={() => handleUpdateJob(element._id)}
-                            className="check_btn"
+                            className="inline-flex items-center px-4 py-2 border border-green-600 rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors duration-200"
                           >
-                            <FaCheck />
+                            <FaCheck className="w-4 h-4 mr-2" />
+                            Save Changes
                           </button>
                           <button
                             onClick={() => handleDisableEdit()}
-                            className="cross_btn"
+                            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200"
                           >
-                            <RxCross2 />
+                            <RxCross2 className="w-4 h-4 mr-2" />
+                            Cancel
                           </button>
                         </>
                       ) : (
                         <button
                           onClick={() => handleEnableEdit(element._id)}
-                          className="edit_btn"
+                          className="inline-flex items-center px-4 py-2 border border-blue-600 rounded-lg text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors duration-200"
                         >
-                          Edit
+                          <FiEdit3 className="w-4 h-4 mr-2" />
+                          Edit Job
                         </button>
                       )}
                     </div>
+
                     <button
                       onClick={() => handleDeleteJob(element._id)}
-                      className="delete_btn"
+                      className="inline-flex items-center px-4 py-2 border border-red-300 rounded-lg text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 transition-colors duration-200"
                     >
-                      Delete
+                      <FiTrash2 className="w-4 h-4 mr-2" />
+                      Delete Job
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
-          </>
+              </div>
+            ))}
+          </div>
         ) : (
-          <p>
-            You've not posted any job or may be you deleted all of your jobs!
-          </p>
+          <div className="text-center py-16">
+            <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md mx-auto">
+              <FiAlertCircle className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-medium text-gray-900 mb-2">No Jobs Posted</h3>
+              <p className="text-gray-500">
+                You haven't posted any jobs yet or may have deleted all of your jobs.
+              </p>
+            </div>
+          </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 
