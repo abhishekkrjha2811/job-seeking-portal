@@ -1,53 +1,54 @@
 import React from "react";
-import { FaMicrosoft, FaApple } from "react-icons/fa";
+import { FaMicrosoft, FaApple, FaMapMarkerAlt } from "react-icons/fa";
 import { SiTesla } from "react-icons/si";
+import '../../css/PopularCompanies.css';
 
 const PopularCompanies = () => {
   const companies = [
     {
       id: 1,
       title: "Microsoft",
-      location: "Street 10 Karachi, Pakistan",
+      location: "Bangalore, India",
       openPositions: 10,
       icon: <FaMicrosoft />,
     },
     {
       id: 2,
       title: "Tesla",
-      location: "Street 10 Karachi, Pakistan",
+      location: "Mumbai, India",
       openPositions: 5,
       icon: <SiTesla />,
     },
     {
       id: 3,
       title: "Apple",
-      location: "Street 10 Karachi, Pakistan",
+      location: "Hyderabad, India",
       openPositions: 20,
       icon: <FaApple />,
     },
   ];
+
   return (
-    <div className="companies">
-      <div className="container">
-        <h3>TOP COMPANIES</h3>
-        <div className="banner">
-          {companies.map((element) => {
-            return (
-              <div className="card" key={element.id}>
-                <div className="content">
-                  <div className="icon">{element.icon}</div>
-                  <div className="text">
-                    <p>{element.title}</p>
-                    <p>{element.location}</p>
-                  </div>
-                </div>
-                <button>Open Positions {element.openPositions}</button>
-              </div>
-            );
-          })}
-        </div>
+    <section className="popular-companies-section">
+      <h2 className="companies-title">Top Companies</h2>
+      <div className="companies-cards">
+        {companies.map((company) => (
+          <div className="company-card" key={company.id}>
+            <div className="company-icon">{company.icon}</div>
+            <div className="company-content">
+              <h3 className="company-title">{company.title}</h3>
+              <p className="company-location">
+                <FaMapMarkerAlt />
+                {company.location}
+              </p>
+              <span className="company-positions">
+                {company.openPositions} Open Positions
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
+    </section>
   );
 };
 

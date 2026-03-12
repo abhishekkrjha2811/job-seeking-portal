@@ -1,4 +1,3 @@
-import React from "react";
 import {
   MdOutlineDesignServices,
   MdOutlineWebhook,
@@ -9,6 +8,7 @@ import { TbAppsFilled } from "react-icons/tb";
 import { FaReact } from "react-icons/fa";
 import { GiArtificialIntelligence } from "react-icons/gi";
 import { IoGameController } from "react-icons/io5";
+import "../../css/PopularCategories.css";
 
 const PopularCategories = () => {
   const categories = [
@@ -33,7 +33,7 @@ const PopularCategories = () => {
     {
       id: 4,
       title: "MERN STACK Development",
-      subTitle: "1000+ Open Postions",
+      subTitle: "1000+ Open Positions",
       icon: <FaReact />,
     },
     {
@@ -61,23 +61,22 @@ const PopularCategories = () => {
       icon: <IoGameController />,
     },
   ];
+
   return (
-    <div className="categories">
-      <h3>POPULAR CATEGORIES</h3>
-      <div className="banner">
-        {categories.map((element) => {
-          return (
-            <div className="card" key={element.id}>
-              <div className="icon">{element.icon}</div>
-              <div className="text">
-                <p>{element.title}</p>
-                <p>{element.subTitle}</p>
-              </div>
+    <section className="popular-categories-section">
+      <h2 className="categories-title">Popular Categories</h2>
+      <div className="categories-cards">
+        {categories.map((cat) => (
+          <div className="category-card" key={cat.id}>
+            <div className="category-icon">{cat.icon}</div>
+            <div className="category-content">
+              <p className="category-title">{cat.title}</p>
+              <p className="category-subtitle">{cat.subTitle}</p>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
-    </div>
+    </section>
   );
 };
 

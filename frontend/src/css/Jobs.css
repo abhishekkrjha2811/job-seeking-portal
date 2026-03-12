@@ -1,0 +1,67 @@
+/* Styles for Jobs page - Full Width, Modern Design */
+.jobs-container {
+  width: 100vw;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 3rem 2rem;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.jobs-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #2a3b4d;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.job-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.job-list-item {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(31,38,135,0.08);
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.job-list-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(31,38,135,0.15);
+}
+
+.job-list-item span {
+  font-size: 1.1rem;
+  color: #2a3b4d;
+  font-weight: 500;
+}
+
+.job-list-item a {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  padding: 0.8rem 1.8rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+}
+
+.job-list-item a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}

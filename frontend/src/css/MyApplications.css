@@ -1,0 +1,138 @@
+/* Styles for MyApplications page - Full Width, Modern Design */
+.my-applications-container {
+  width: 100vw;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 3rem 2rem;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.my-applications-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #2a3b4d;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.application-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.application-list-item {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(31,38,135,0.08);
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.application-list-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(31,38,135,0.15);
+}
+
+.application-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.application-job-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2a3b4d;
+  margin-bottom: 0.5rem;
+}
+
+.application-company {
+  font-size: 1rem;
+  color: #6b7280;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.application-date {
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.status {
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  text-align: center;
+  min-width: 120px;
+  box-shadow: 0 2px 8px rgba(31,38,135,0.1);
+}
+
+.status.pending {
+  background: linear-gradient(45deg, #feca57, #ff9ff3);
+  color: #2a3b4d;
+}
+
+.status.accepted {
+  background: linear-gradient(45deg, #48cab2, #2dd4bf);
+  color: white;
+}
+
+.status.rejected {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+}
+
+.application-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.view-resume-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.view-resume-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 768px) {
+  .application-list-item {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .application-actions {
+    justify-content: center;
+  }
+  
+  .my-applications-title {
+    font-size: 2.2rem;
+  }
+}
