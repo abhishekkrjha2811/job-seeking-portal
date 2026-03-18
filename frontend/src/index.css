@@ -1,0 +1,108 @@
+@import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/pagination";
+
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+@layer base {
+    html {
+        scroll-behavior: auto; /* Lenis controls smoothness */
+    }
+}
+
+@theme {
+    /* ---------------------- FONT FAMILY ---------------------- */
+    --font-inter: Inter, sans-serif;
+    --font-edu-sa: "Edu SA Beginner", cursive;
+    --font-mono: "Roboto Mono", monospace;
+
+    /* ---------------------- CUSTOM COLORS ---------------------- */
+
+    /* RICH BLACK */
+    --color-richblack-5: #f1f2ff;
+    --color-richblack-25: #dbddea;
+    --color-richblack-50: #c5c7d4;
+    --color-richblack-100: #afb2bf;
+    --color-richblack-200: #999daa;
+    --color-richblack-300: #838894;
+    --color-richblack-400: #6e727f;
+    --color-richblack-500: #585d69;
+    --color-richblack-600: #424854;
+    --color-richblack-700: #2c333f;
+    --color-richblack-800: #161d29;
+    --color-richblack-900: #000814;
+
+    /* RICH BLUE */
+    --color-richblue-5: #ecf5ff;
+    --color-richblue-25: #c6d6e1;
+    --color-richblue-50: #a0b7c3;
+    --color-richblue-100: #7a98a6;
+    --color-richblue-200: #537988;
+    --color-richblue-300: #2d5a6a;
+    --color-richblue-400: #073b4c;
+    --color-richblue-500: #063544;
+    --color-richblue-600: #042e3b;
+    --color-richblue-700: #032833;
+    --color-richblue-800: #01212a;
+    --color-richblue-900: #001b22;
+
+    /* CARIBBEAN GREEN */
+    --color-caribbeangreen-5: #c1fffd;
+    --color-caribbeangreen-25: #83f1de;
+    --color-caribbeangreen-50: #44e4bf;
+    --color-caribbeangreen-100: #06d6a0;
+    --color-caribbeangreen-200: #05bf8e;
+    --color-caribbeangreen-300: #05a77b;
+    --color-caribbeangreen-400: #049069;
+    --color-caribbeangreen-500: #037957;
+    --color-caribbeangreen-600: #026144;
+    --color-caribbeangreen-700: #014a32;
+    --color-caribbeangreen-800: #01321f;
+    --color-caribbeangreen-900: #001b0d;
+
+    /* BROWN */
+    --color-brown-5: #fff4c4;
+    --color-brown-25: #ffe395;
+    --color-brown-50: #ffd166;
+    --color-brown-100: #e7bc5b;
+    --color-brown-200: #cfa64f;
+    --color-brown-300: #b89144;
+    --color-brown-400: #a07c39;
+    --color-brown-500: #88662d;
+    --color-brown-600: #705122;
+    --color-brown-700: #593c17;
+    --color-brown-800: #41260b;
+    --color-brown-900: #291100;
+
+    /* PURE GREYS */
+    --color-puregreys-5: #f9f9f9;
+    --color-puregreys-25: #e2e2e2;
+    --color-puregreys-50: #cccccc;
+    --color-puregreys-100: #b5b5b5;
+    --color-puregreys-200: #9e9e9e;
+    --color-puregreys-300: #888888;
+    --color-puregreys-400: #717171;
+    --color-puregreys-500: #5b5b5b;
+    --color-puregreys-600: #444444;
+    --color-puregreys-700: #2d2d2d;
+    --color-puregreys-800: #171717;
+    --color-puregreys-900: #141414;
+
+    /* MAX WIDTHS */
+    --maxContent: 1260px;
+    --maxContentTab: 650px;
+}
