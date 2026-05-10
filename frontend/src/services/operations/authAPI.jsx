@@ -6,7 +6,7 @@ import { setUser } from "../../slices/profileSlice";
 import { apiConnector } from "../apiConnector";
 import { endpoints } from "../apis";
 
-const { SIGNUP_API, VERIFY_EMAIL_API, LOGIN_API } = endpoints;
+const { SIGNUP_API, VERIFY_EMAIL_API, LOGIN_API, UPDATE_PROFILE_API } = endpoints;
 
 export function signUp(signupData, navigate) {
     return async (dispatch) => {
@@ -116,6 +116,30 @@ export function verifyEmail(otp, signupData, navigate) {
         }
         dispatch(setLoading(false));
         toast.dismiss(toastId);
+    };
+}
+
+export function updateProfile(profileData) {
+    return async (dispatch) => {
+        const toastId = toast.loading("Updating profile...");
+        try {
+            const response = await apiConnector("PUT", UPDATE_PROFILE_API, profileData);
+
+            if (!response.data.success) {
+                throw new Error(response.data.message);
+            }
+
+            dispatch(setUser(response.data.user));
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            toast.success("Profile updated successfully");
+            return response.data.user;
+        } catch (error) {
+            console.log("UPDATE_PROFILE_API ERROR............", error);
+            toast.error(error?.response?.data?.message || "Could not update profile");
+            return null;
+        } finally {
+            toast.dismiss(toastId);
+        }
     };
 }
 

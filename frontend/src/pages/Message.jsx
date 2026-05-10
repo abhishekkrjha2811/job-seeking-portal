@@ -21,6 +21,7 @@ const Message = () => {
 
     const [messages, setMessages] = useState([]);
     const [text, setText] = useState('');
+    const [activeUsersCount, setActiveUsersCount] = useState(0);
 
     console.log("message is ", messages)
 
@@ -52,6 +53,10 @@ const Message = () => {
             socket.current.on('stopTyping', (userName) => {
                 setTypers((prev) => prev.filter((typer) => typer !== userName));
             });
+
+            socket.current.on('activeUsers', (count) => {
+                setActiveUsersCount(count);
+            });
         });
 
         return () => {
@@ -59,6 +64,7 @@ const Message = () => {
             socket.current.off('chatMessage');
             socket.current.off('typing');
             socket.current.off('stopTyping');
+            socket.current.off('activeUsers');
         };
     }, []);
 
@@ -177,6 +183,9 @@ const Message = () => {
                             ) : (
                                 ''
                             )}
+                            <div className="text-xs text-emerald-600 font-medium mt-1">
+                                {activeUsersCount} active users online
+                            </div>
                         </div>
                         <div className="text-sm text-gray-500">
                             Signed in as{' '}

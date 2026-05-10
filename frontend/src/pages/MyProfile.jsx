@@ -1,9 +1,31 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { FaUser, FaEnvelope, FaPhone, FaGraduationCap, FaCalendar, FaUserTag } from 'react-icons/fa'
+import { updateProfile } from '../services/operations/authAPI'
 
 const MyProfile = () => {
+  const dispatch = useDispatch()
   const { user } = useSelector((state) => state.profile)
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    branch: 'cse',
+    year: '',
+  })
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        phone: user.phone || '',
+        branch: user.branch || 'cse',
+        year: user.year || '',
+      })
+    }
+  }, [user])
 
   if (!user) {
     return (
@@ -67,6 +89,22 @@ const MyProfile = () => {
       Admin: 'bg-red-100 text-red-800'
     }
     return colors[role] || 'bg-gray-100 text-gray-800'
+  }
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const result = await dispatch(updateProfile(formData))
+    if (result) {
+      setIsEditOpen(false)
+    }
   }
 
   return (
@@ -150,12 +188,107 @@ const MyProfile = () => {
                   })}
                 </p>
               </div>
-              <button className='px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md'>
+              <button onClick={() => setIsEditOpen(true)} className='px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md cursor-pointer'>
                 Edit Profile
               </button>
             </div>
           </div>
         </div>
+
+        {isEditOpen && (
+          <div className='fixed inset-0 z-50 flex items-center justify-center px-4'>
+            <div className='absolute inset-0 bg-black/40' onClick={() => setIsEditOpen(false)} />
+            <div className='relative z-10 w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl'>
+              <div className='mb-6 flex items-start justify-between gap-4'>
+                <div>
+                  <h3 className='text-2xl font-bold text-gray-900'>Edit Profile</h3>
+                  <p className='text-sm text-gray-500'>Update the details shown on your profile.</p>
+                </div>
+                <button
+                  type='button'
+                  onClick={() => setIsEditOpen(false)}
+                  className='rounded-full px-3 py-1 text-gray-500 hover:bg-gray-100 hover:text-gray-800 cursor-pointer'
+                >
+                  ×
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                <label className='flex flex-col gap-2'>
+                  <span className='text-sm font-medium text-gray-700'>First Name</span>
+                  <input
+                    required
+                    name='firstName'
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    className='rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-indigo-500'
+                  />
+                </label>
+                <label className='flex flex-col gap-2'>
+                  <span className='text-sm font-medium text-gray-700'>Last Name</span>
+                  <input
+                    name='lastName'
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className='rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-indigo-500'
+                  />
+                </label>
+                <label className='flex flex-col gap-2'>
+                  <span className='text-sm font-medium text-gray-700'>Phone Number</span>
+                  <input
+                    required
+                    name='phone'
+                    type='number'
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className='rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-indigo-500'
+                  />
+                </label>
+                <label className='flex flex-col gap-2'>
+                  <span className='text-sm font-medium text-gray-700'>Branch</span>
+                  <select
+                    required
+                    name='branch'
+                    value={formData.branch}
+                    onChange={handleChange}
+                    className='rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-indigo-500'
+                  >
+                    <option value='cse'>Computer Science Engineering</option>
+                    <option value='me'>Mechanical Engineering</option>
+                    <option value='ece'>Electronics & Communication Engineering</option>
+                  </select>
+                </label>
+                <label className='flex flex-col gap-2 md:col-span-2'>
+                  <span className='text-sm font-medium text-gray-700'>Year</span>
+                  <input
+                    required
+                    name='year'
+                    type='number'
+                    value={formData.year}
+                    onChange={handleChange}
+                    className='rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-indigo-500'
+                  />
+                </label>
+
+                <div className='md:col-span-2 flex justify-end gap-3 pt-2'>
+                  <button
+                    type='button'
+                    onClick={() => setIsEditOpen(false)}
+                    className='rounded-xl border border-gray-200 px-5 py-3 font-medium text-gray-700 hover:bg-gray-50 cursor-pointer'
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type='submit'
+                    className='rounded-xl bg-indigo-600 px-5 py-3 font-medium text-white hover:bg-indigo-700 cursor-pointer'
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
         {/* Stats Section (Optional - can be customized based on role) */}
         {user.role === 'Student' && (

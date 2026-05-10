@@ -131,6 +131,14 @@ function App() {
                         </PrivateRoute>
                     }
                 />
+                <Route
+                    path="/edit-job/:id"
+                    element={
+                        <PrivateRoute>
+                            <PostJob />
+                        </PrivateRoute>
+                    }
+                />
 
                 <Route path="/messages"
                 element={

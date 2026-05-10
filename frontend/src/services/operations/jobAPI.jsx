@@ -4,6 +4,7 @@ import { endpoints } from "../apis";
 
 const {
     GET_ALL_JOBS_API,
+    GET_SINGLE_JOB_API,
     APPLY_JOB_API,
     GET_STUDENT_APPLICATIONS_API,
     DELETE_APPLICATION_API,
@@ -124,6 +125,52 @@ export function postJob(jobData, navigate) {
         } catch (error) {
             console.log("POST_JOB_API ERROR............", error);
             toast.error(error?.response?.data?.message || "Could not post job");
+        }
+        toast.dismiss(toastId);
+        return result;
+    };
+}
+
+export function getSingleJob(jobId) {
+    return async (dispatch) => {
+        const toastId = toast.loading("Loading job details...");
+        let result = null;
+        try {
+            const response = await apiConnector("GET", `${GET_SINGLE_JOB_API}/${jobId}`);
+
+            if (!response.data.success) {
+                throw new Error(response.data.message);
+            }
+
+            result = response.data.job;
+        } catch (error) {
+            console.log("GET_SINGLE_JOB_API ERROR............", error);
+            toast.error(error?.response?.data?.message || "Could not fetch job details");
+        }
+        toast.dismiss(toastId);
+        return result;
+    };
+}
+
+export function updateJob(jobId, jobData, navigate) {
+    return async (dispatch) => {
+        const toastId = toast.loading("Updating job...");
+        let result = null;
+        try {
+            const response = await apiConnector("PUT", `${UPDATE_JOB_API}/${jobId}`, jobData, {
+                "Content-Type": "multipart/form-data",
+            });
+
+            if (!response.data.success) {
+                throw new Error(response.data.message);
+            }
+
+            result = response.data;
+            toast.success("Job updated successfully!");
+            navigate("/my-posted-jobs");
+        } catch (error) {
+            console.log("UPDATE_JOB_API ERROR............", error);
+            toast.error(error?.response?.data?.message || "Could not update job");
         }
         toast.dismiss(toastId);
         return result;

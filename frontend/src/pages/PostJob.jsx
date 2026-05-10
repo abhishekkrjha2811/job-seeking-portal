@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { postJob } from "../services/operations/jobAPI";
+import { useNavigate, useParams } from "react-router-dom";
+import { getSingleJob, postJob, updateJob } from "../services/operations/jobAPI";
 import { FaBriefcase, FaFileAlt, FaMapMarkerAlt, FaGlobe, FaCity, FaMoneyBillWave, FaTags, FaFileUpload } from "react-icons/fa";
 
 const PostJob = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { id: jobId } = useParams();
+    const isEditMode = Boolean(jobId);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -23,6 +25,36 @@ const PostJob = () => {
 
     const [salaryType, setSalaryType] = useState("range"); // "range" or "fixed"
     const [documentPreview, setDocumentPreview] = useState("");
+    const [loadingJob, setLoadingJob] = useState(isEditMode);
+
+    useEffect(() => {
+        const fetchJob = async () => {
+            if (!jobId) return;
+
+            setLoadingJob(true);
+            const job = await dispatch(getSingleJob(jobId));
+            if (job) {
+                const hasFixedSalary = job.fixedSalary && Number(job.fixedSalary) > 0;
+                setSalaryType(hasFixedSalary ? "fixed" : "range");
+                setFormData({
+                    title: job.title || "",
+                    description: job.description || "",
+                    category: job.category || "",
+                    country: job.country || "",
+                    city: job.city || "",
+                    location: job.location || "",
+                    salaryFrom: job.salaryFrom || "",
+                    salaryTo: job.salaryTo || "",
+                    fixedSalary: job.fixedSalary || "",
+                    jobDocument: null,
+                });
+                setDocumentPreview(job.jobDocument?.url ? "Current uploaded document" : "");
+            }
+            setLoadingJob(false);
+        };
+
+        fetchJob();
+    }, [dispatch, jobId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -95,7 +127,9 @@ const PostJob = () => {
             jobData.append("jobDocument", formData.jobDocument);
         }
 
-        const result = await dispatch(postJob(jobData, navigate));
+        const result = isEditMode
+            ? await dispatch(updateJob(jobId, jobData, navigate))
+            : await dispatch(postJob(jobData, navigate));
 
         if (result) {
             // Reset form
@@ -116,15 +150,35 @@ const PostJob = () => {
         }
     };
 
+    if (loadingJob) {
+        return (
+            <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-14 w-full flex items-center justify-center">
+                <div className="rounded-2xl bg-white px-8 py-6 shadow-lg text-gray-700 font-semibold">Loading job details...</div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-14 w-full flex justify-center">
             <div className="w-full mx-auto">
                 {/* Header */}
                 <div className="text-center mb-10">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">
-                        Post a <span className="text-blue-600">New Job</span>
+                        {isEditMode ? (
+                            <>
+                                Edit <span className="text-blue-600">Job</span>
+                            </>
+                        ) : (
+                            <>
+                                Post a <span className="text-blue-600">New Job</span>
+                            </>
+                        )}
                     </h1>
-                    <p className="text-lg text-gray-600">Fill in the details below to create a new job posting</p>
+                    <p className="text-lg text-gray-600">
+                        {isEditMode
+                            ? "Update the job details below and save your changes."
+                            : "Fill in the details below to create a new job posting"}
+                    </p>
                 </div>
 
                 {/* Form Card */}
@@ -392,7 +446,7 @@ const PostJob = () => {
                                 type="submit"
                                 className="flex-1 w-full px-6 py-4 bg-gradient-to-r from-[#2D68C4] to-[#87CEEB] text-white font-semibold rounded-lg hover:from-[#2a52be] hover:to-[#4B9CD3] transition shadow-lg text-lg"
                             >
-                                Post Job
+                                {isEditMode ? "Save Changes" : "Post Job"}
                             </button>
                         </div>
                     </form>

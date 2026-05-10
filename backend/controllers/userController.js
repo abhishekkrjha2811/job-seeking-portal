@@ -182,3 +182,30 @@ export const getUser = catchAsyncErrors((req, res, next) => {
     user,
   });
 });
+
+export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const { firstName, lastName, phone, branch, year } = req.body;
+
+  if (!firstName || !phone || !branch || !year) {
+    return next(new ErrorHandler("Please fill all required profile fields.", 400));
+  }
+
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    return next(new ErrorHandler("User not found.", 404));
+  }
+
+  user.firstName = firstName;
+  user.lastName = lastName;
+  user.phone = phone;
+  user.branch = branch;
+  user.year = year;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully.",
+    user,
+  });
+});

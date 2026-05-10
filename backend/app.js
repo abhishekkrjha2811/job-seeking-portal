@@ -60,6 +60,11 @@ const io = new Server(server, {
 });
 
 const ROOM = 'group';
+const activeUsers = new Map();
+
+async function emitActiveUserCount() {
+    io.to(ROOM).emit('activeUsers', activeUsers.size);
+}
 
 io.on('connection', (socket) => {
     console.log('a user connected', socket.id);
@@ -67,7 +72,9 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', async (userName) => {
         console.log(`${userName} is joining the group.`);
 
+        activeUsers.set(socket.id, userName);
         await socket.join(ROOM);
+        await emitActiveUserCount();
 
         // send to all
         // io.to(ROOM).emit('roomNotice', userName);
@@ -86,6 +93,11 @@ io.on('connection', (socket) => {
 
     socket.on('stopTyping', (userName) => {
         socket.to(ROOM).emit('stopTyping', userName);
+    });
+
+    socket.on('disconnect', async () => {
+        activeUsers.delete(socket.id);
+        await emitActiveUserCount();
     });
 });
 export default app;
