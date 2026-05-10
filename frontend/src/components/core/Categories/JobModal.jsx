@@ -1,8 +1,10 @@
 import React from "react";
 import { IoIosClose } from "react-icons/io";
 import { IoRadioButtonOff } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 const JobModal = ({ job, onClose }) => {
+    const { user } = useSelector((state) => state.profile);
     if (!job) return null;
 
     return (
@@ -53,9 +55,13 @@ const JobModal = ({ job, onClose }) => {
                 </div>
 
                 {/*APPLY now and VIEW profile*/}
-                <div className="flex w-full gap-2 justify-between mt-7">
-                    <button className="bg-[#0096ff] rounded-lg p-3 text-center text-white w-[50%]">Apply Now</button>
-                    <button className="bg-white rounded-lg p-3 text-center text-black ring-1 w-[50%]">View Profile</button>
+                <div className={`flex w-full gap-2 justify-between mt-7 ${user?.role === "Admin" ? "justify-end" : ""}`}>
+                    {user?.role !== "Admin" && (
+                        <button className="bg-[#0096ff] rounded-lg p-3 text-center text-white w-[50%]">Apply Now</button>
+                    )}
+                    <button className={`${user?.role === "Admin" ? "w-full" : "w-[50%]"} bg-white rounded-lg p-3 text-center text-black ring-1`}>
+                        View Profile
+                    </button>
                 </div>
             </div>
         </div>

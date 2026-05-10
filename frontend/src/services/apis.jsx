@@ -16,6 +16,11 @@ export const endpoints = {
     GET_PROFESSOR_APPLICATIONS_API: BASE_URL + "/application/professor/applications",
     UPDATE_APPLICATION_STATUS_API: BASE_URL + "/application/update-status",
     UPDATE_JOB_API: BASE_URL + "/job/update",
+    ADMIN_USERS_API: BASE_URL + "/admin/users",
+    ADMIN_JOBS_API: BASE_URL + "/admin/jobs",
+    ADMIN_DELETE_JOB_API: BASE_URL + "/admin/job",
+    ADMIN_STATS_API: BASE_URL + "/admin/stats",
+    ADMIN_TOGGLE_USER_BLOCK_API: BASE_URL + "/admin/user/block",
 };
 
 //////

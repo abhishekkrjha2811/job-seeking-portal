@@ -26,15 +26,16 @@ export const sendVerificationEamil=async(email,verificationCode)=>{
         console.log('Email error',error)
     }
 }
-export const sendWelcomeEmail=async(email,name)=>{
+export const sendWelcomeEmail=async(email,name,portalLink)=>{
     try {
+     const frontendUrl = portalLink || process.env.FRONTEND_URL || "http://localhost:5173";
      const response=   await transporter.sendMail({
             from: EMAIL_FROM,
 
             to: email, // list of receivers
             subject: "Welcome Email", // Subject line
             text: "Welcome Email", // plain text body
-            html: Welcome_Email_Template.replace("{name}",name)
+            html: Welcome_Email_Template.replace("{name}",name).replace("{portalLink}",frontendUrl)
         })
         console.log('Email send Successfully',response)
     } catch (error) {

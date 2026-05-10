@@ -86,6 +86,8 @@ const AllJobs = () => {
         setIsModalOpen(true);
     };
 
+    const isAdminUser = user?.role === "Admin";
+
     const isOwnJob = (job) => {
         if (!user) return false;
         const postedById = job.postedBy?._id || job.postedBy?.user || job.postedBy;
@@ -297,15 +299,15 @@ const AllJobs = () => {
                                         </a>
                                         <button
                                             className={`flex-1 py-2.5 px-4 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
-                                                job.expired || isOwnJob(job)
+                                                job.expired || isOwnJob(job) || isAdminUser
                                                     ? "bg-slate-300 text-slate-500 cursor-not-allowed"
                                                     : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 shadow-md hover:shadow-lg"
                                             }`}
                                             onClick={() => handleApplyNow(job)}
-                                            disabled={job.expired || isOwnJob(job)}
+                                            disabled={job.expired || isOwnJob(job) || isAdminUser}
                                         >
                                             <FaBriefcase />
-                                            {job.expired ? "Closed" : isOwnJob(job) ? "Your Job" : "Apply"}
+                                            {job.expired ? "Closed" : isAdminUser ? "Admin Only" : isOwnJob(job) ? "Your Job" : "Apply"}
                                         </button>
                                     </div>
                                 </div>

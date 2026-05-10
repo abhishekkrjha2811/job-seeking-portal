@@ -6,6 +6,7 @@ import {
   getDashboardStats,
   deleteUser,
   updateUserRole,
+  toggleUserBlock,
   deleteJobAdmin,
   deleteApplicationAdmin,
 } from "../controllers/adminController.js";
@@ -20,6 +21,7 @@ router.get("/jobs", isAuthenticated, isAdmin, getAllJobsAdmin);
 router.get("/applications", isAuthenticated, isAdmin, getAllApplicationsAdmin);
 router.delete("/user/:id", isAuthenticated, isAdmin, deleteUser);
 router.put("/user/role/:id", isAuthenticated, isAdmin, updateUserRole);
+router.put("/user/block/:id", isAuthenticated, isAdmin, toggleUserBlock);
 router.delete("/job/:id", isAuthenticated, isAdmin, deleteJobAdmin);
 router.delete("/application/:id", isAuthenticated, isAdmin, deleteApplicationAdmin);
 

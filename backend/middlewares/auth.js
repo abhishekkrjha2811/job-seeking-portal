@@ -16,6 +16,14 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
 
   req.user = await User.findById(decoded.id);
 
+  if (!req.user) {
+    return next(new ErrorHandler("User Not Authorized", 401));
+  }
+
+  if (req.user.isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked by admin.", 403));
+  }
+
   next();
 });
 

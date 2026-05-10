@@ -21,6 +21,8 @@ import AllCategories from "./pages/AllCategories";
 import OpenRoute from "./components/core/auth/OpenRoute";
 import PrivateRoute from "./components/core/auth/PrivateRoute";
 import Message from "./pages/Message"
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminJobs from "./pages/AdminJobs";
 // import Message from "./pages/Message"
 import useLenis from "./hooks/useLenis";
 // import Message from "./pages/Message"
@@ -146,6 +148,22 @@ function App() {
                         <Message/>
                     </PrivateRoute>
                 }
+                />
+                <Route
+                    path="/admin/jobs"
+                    element={
+                        <PrivateRoute>
+                            <AdminJobs />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/admin/dashboard"
+                    element={
+                        <PrivateRoute>
+                            <AdminDashboard />
+                        </PrivateRoute>
+                    }
                 />
             </Routes>
             <Footer />

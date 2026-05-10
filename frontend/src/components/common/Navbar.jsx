@@ -10,6 +10,8 @@ const Navbar = () => {
     const { token } = useSelector((state) => state.auth);
     const { user } = useSelector((state) => state.profile);
     const location = useLocation();
+    const navStatus = !user ? "loggedOut" : user.role === "Admin" ? "admin" : "loggedIn";
+    const currentRoute = `${location.pathname}${location.hash}`;
     const matchRoute = (route) => {
         return matchPath({ path: route }, location.pathname);
     };
@@ -23,12 +25,10 @@ const Navbar = () => {
                 {/* div 2 -> navbar links */}
                 <div className="flex flex-row gap-x-6 font-inter text-bold">
                     {navLinks
-                        .filter((link) => (user ? link.status === "loggedIn" : link.status === "loggedOut"))
+                        .filter((link) => link.status === navStatus)
                         .map((link, index) => (
                             <Link to={link.linkTo} key={index} className="cursor-pointer">
-                                <button
-                                    className={`${matchRoute(link.linkTo) ? "text-cyan-600" : "text-richblack-900"} cursor-pointer`}
-                                >
+                                <button className={`${currentRoute === link.linkTo || matchRoute(link.linkTo) ? "text-cyan-600" : "text-richblack-900"} cursor-pointer`}>
                                     {link.title}
                                 </button>
                             </Link>

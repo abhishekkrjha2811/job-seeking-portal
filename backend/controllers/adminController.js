@@ -13,7 +13,7 @@ export const fetchAllUsers = async () => {
 // Get all users
 export const getAllUsers = catchAsyncErrors(async (req, res, next) => {
   const { role } = req.user;
-  if (role !== "Admin" && role !== "Professor") {
+  if (role !== "Admin") {
     return next(new ErrorHandler("Only Admin can access this resource.", 403));
   }
 
@@ -35,6 +35,34 @@ export const getAllUsers = catchAsyncErrors(async (req, res, next) => {
   return users;
 });
 
+// Toggle user block status (admin only)
+export const toggleUserBlock = catchAsyncErrors(async (req, res, next) => {
+  const { role } = req.user;
+  if (role !== "Admin") {
+    return next(new ErrorHandler("Only Admin can update user access.", 403));
+  }
+
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found!", 404));
+  }
+
+  if (user._id.toString() === req.user._id.toString()) {
+    return next(new ErrorHandler("You cannot block yourself!", 400));
+  }
+
+  user.isBlocked = !user.isBlocked;
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: user.isBlocked ? "User blocked successfully!" : "User unblocked successfully!",
+    user,
+  });
+});
+
 // Get all jobs (admin view)
 export const getAllJobsAdmin = catchAsyncErrors(async (req, res, next) => {
   const { role } = req.user;
@@ -42,7 +70,7 @@ export const getAllJobsAdmin = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Only Admin can access this resource.", 403));
   }
 
-  const jobs = await Job.find().populate("postedBy", "name email role");
+  const jobs = await Job.find().populate("postedBy", "firstName lastName email role");
   
   const stats = {
     totalJobs: jobs.length,
@@ -105,7 +133,7 @@ export const getDashboardStats = catchAsyncErrors(async (req, res, next) => {
   const rejectedApplications = await Application.countDocuments({ status: "Rejected" });
 
   // Recent activities
-  const recentJobs = await Job.find().sort({ jobPostedOn: -1 }).limit(5).populate("postedBy", "name role");
+  const recentJobs = await Job.find().sort({ jobPostedOn: -1 }).limit(5).populate("postedBy", "firstName lastName role");
   const recentApplications = await Application.find()
     .sort({ _id: -1 })
     .limit(5)

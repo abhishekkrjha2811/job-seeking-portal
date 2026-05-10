@@ -45,6 +45,10 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please select a role"],
     enum: ["Student","Professor","Admin"],
   },
+  isBlocked: {
+    type: Boolean,
+    default: false,
+  },
    profilePic: {type: String, default: "/profile.png"},
     lastLogin: { type: Date, default: Date.now },
     isVerified: { type: Boolean, default: false },

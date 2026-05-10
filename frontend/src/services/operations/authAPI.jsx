@@ -72,7 +72,7 @@ export function login(email, password, role, navigate) {
 
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("user", JSON.stringify(response.data.user));
-            navigate("/dashboard/my-profile");
+            navigate(response.data.user.role === "Admin" ? "/admin/dashboard" : "/dashboard/my-profile");
         } catch (error) {
             console.log("LOGIN API ERROR............", error);
             toast.error(error?.response?.data?.message || "Login Failed");
@@ -117,7 +117,7 @@ export function verifyEmail(otp, signupData, navigate) {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("user", JSON.stringify(response.data.user));
 
-            navigate("/dashboard/my-profile");
+            navigate(response.data.user.role === "Admin" ? "/admin/dashboard" : "/dashboard/my-profile");
             result = response.data;
         } catch (error) {
             console.log("VERIFY EMAIL API ERROR............", error);

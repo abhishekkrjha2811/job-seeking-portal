@@ -47,4 +47,19 @@ export const navLinks = [
         linkTo: "/messages",
         status: "loggedIn",
     },
+    {
+        title: "Browse Jobs",
+        linkTo: "/admin/jobs",
+        status: "admin",
+    },
+    {
+        title: "Users",
+        linkTo: "/admin/dashboard#users",
+        status: "admin",
+    },
+    {
+        title: "Messages",
+        linkTo: "/messages",
+        status: "admin",
+    },
 ];

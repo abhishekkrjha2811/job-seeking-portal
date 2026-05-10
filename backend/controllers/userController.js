@@ -129,7 +129,10 @@ export const VerfiyEmail=async(req,res)=>{
      userp.verificationToken=undefined;
      userp.verificationTokenExpiresAt=undefined;
      await userp.save()
-     await sendWelcomeEmail(userp.email,userp.name)
+
+     const displayName = [userp.firstName, userp.lastName].filter(Boolean).join(" ").trim() || userp.firstName || "there";
+     const portalUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+     await sendWelcomeEmail(userp.email, displayName, portalUrl)
      sendToken(userp,201,res,"Email Verified Successfully")
            
     } catch (error) {
@@ -157,6 +160,10 @@ export const login = catchAsyncErrors(async (req, res, next) => {
     return next(
       new ErrorHandler(`User with provided email and ${role} not found!`, 404)
     );
+  }
+
+  if (user.isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked by admin.", 403));
   }
 
   if (!user.isVerified) {

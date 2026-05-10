@@ -40,30 +40,50 @@ const ProfileDropDown = () => {
                     className="absolute top-[60px] w-[200px] right-0 z-[1000] divide-y-[1px] divide-richblack-700 overflow-hidden rounded-md border-[1px] border-richblack-700 bg-white"
                     ref={menuRef}
                 >
+                    {user?.role === "Admin" && (
+                        <>
+                        <Link to="/admin/dashboard" onClick={() => setIsOpen(false)}>
+                            <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
+                                <VscDashboard className="text-lg" />
+                                Admin Dashboard
+                            </div>
+                        </Link>
+                        <Link to="/messages" onClick={() => setIsOpen(false)}>
+                            <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
+                                <VscMail className="text-lg" />
+                                Messages
+                            </div>
+                        </Link>
+                        </>
+                    )}
                     <Link to="/dashboard/my-profile" onClick={() => setIsOpen(false)}>
                         <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
                             <VscDashboard className="text-lg" />
                             Profile
                         </div>
                     </Link>
-                    <Link to="/my-applications" onClick={() => setIsOpen(false)}>
-                        <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
-                            <FiFileText className="text-lg" />
-                            My Applications
-                        </div>
-                    </Link>
-                    <Link to="my-posted-jobs" onClick={() => setIsOpen(false)}>
-                        <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
-                            <BsBriefcase className="text-lg" />
-                            My Jobs
-                        </div>
-                    </Link>
-                    <Link to="/messages" onClick={() => setIsOpen(false)}>
-                        <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
-                            <VscMail className="text-lg" />
-                            Inbox
-                        </div>
-                    </Link>
+                    {user?.role !== "Admin" && (
+                        <>
+                            <Link to="/my-applications" onClick={() => setIsOpen(false)}>
+                                <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
+                                    <FiFileText className="text-lg" />
+                                    My Applications
+                                </div>
+                            </Link>
+                            <Link to="my-posted-jobs" onClick={() => setIsOpen(false)}>
+                                <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
+                                    <BsBriefcase className="text-lg" />
+                                    My Jobs
+                                </div>
+                            </Link>
+                            <Link to="/messages" onClick={() => setIsOpen(false)}>
+                                <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
+                                    <VscMail className="text-lg" />
+                                    Inbox
+                                </div>
+                            </Link>
+                        </>
+                    )}
                     <div
                         onClick={() => {
                             dispatch(logout(navigate));
