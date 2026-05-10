@@ -64,12 +64,14 @@ const ProfileDropDown = () => {
                     </Link>
                     {user?.role !== "Admin" && (
                         <>
-                            <Link to="/my-applications" onClick={() => setIsOpen(false)}>
-                                <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
-                                    <FiFileText className="text-lg" />
-                                    My Applications
-                                </div>
-                            </Link>
+                            {user?.role === "Student" && (
+                                <Link to="/my-applications" onClick={() => setIsOpen(false)}>
+                                    <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
+                                        <FiFileText className="text-lg" />
+                                        My Applications
+                                    </div>
+                                </Link>
+                            )}
                             <Link to="my-posted-jobs" onClick={() => setIsOpen(false)}>
                                 <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-900 hover:bg-richblack-700 hover:text-richblack-25">
                                     <BsBriefcase className="text-lg" />

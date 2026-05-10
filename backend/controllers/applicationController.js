@@ -8,7 +8,13 @@ import { ApplicationStatus } from "../nodemailer/Email.js";
 
 // Student applies for a job with resume upload
 export const applyForJob = catchAsyncErrors(async (req, res, next) => {
-  const { role } = req.user;
+  const { role, isBlocked } = req.user;
+  
+  // Check if user is blocked
+  if (isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked. You cannot apply for jobs.", 403));
+  }
+  
   // Only students can apply for jobs
   if (role !== "Student") {
     return next(
@@ -61,6 +67,11 @@ export const applyForJob = catchAsyncErrors(async (req, res, next) => {
   const jobPoster = await User.findById(jobDetails.postedBy);
   if (!jobPoster) {
     return next(new ErrorHandler("Job poster not found!", 404));
+  }
+
+  // Check if job poster is blocked
+  if (jobPoster.isBlocked) {
+    return next(new ErrorHandler("This job posting is no longer available.", 404));
   }
 
   // Job poster can be either Professor or Student

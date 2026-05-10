@@ -26,6 +26,7 @@ const Navbar = () => {
                 <div className="flex flex-row gap-x-6 font-inter text-bold">
                     {navLinks
                         .filter((link) => link.status === navStatus)
+                        .filter((link) => !(user?.role === "Professor" && link.title === "My Applications"))
                         .map((link, index) => (
                             <Link to={link.linkTo} key={index} className="cursor-pointer">
                                 <button className={`${currentRoute === link.linkTo || matchRoute(link.linkTo) ? "text-cyan-600" : "text-richblack-900"} cursor-pointer`}>

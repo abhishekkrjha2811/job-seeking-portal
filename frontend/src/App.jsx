@@ -25,6 +25,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminJobs from "./pages/AdminJobs";
 // import Message from "./pages/Message"
 import useLenis from "./hooks/useLenis";
+import { Navigate } from "react-router-dom";
 // import Message from "./pages/Message"
 
 function App() {
@@ -105,7 +106,7 @@ function App() {
                     path="/my-applications"
                     element={
                         <PrivateRoute>
-                            <MyApplications />
+                            {user?.role === "Student" ? <MyApplications /> : <Navigate to="/job" replace />}
                         </PrivateRoute>
                     }
                 />

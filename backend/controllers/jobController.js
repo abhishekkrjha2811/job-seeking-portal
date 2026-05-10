@@ -6,15 +6,31 @@ import { NotifyAll } from "../nodemailer/Email.js";
 import { fetchAllUsers } from "./adminController.js";
 
 export const getAllJobs = catchAsyncErrors(async (req, res, next) => {
-  const jobs = await Job.find({}).populate('postedBy', 'firstName lastName email role');
+  // Check if the requesting user is blocked (if authenticated)
+  if (req.user && req.user.isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked. You cannot view jobs.", 403));
+  }
+  
+  // Get all jobs and populate poster info
+  const jobs = await Job.find({}).populate('postedBy', 'firstName lastName email role isBlocked');
+  
+  // Filter out jobs posted by blocked users
+  const activeJobs = jobs.filter(job => !job.postedBy.isBlocked);
+  
   res.status(200).json({
     success: true,
-    jobs,
+    jobs: activeJobs,
   });
 });
 
 export const postJob = catchAsyncErrors(async (req, res, next) => {
-  const { role } = req.user;
+  const { role, isBlocked } = req.user;
+  
+  // Check if user is blocked
+  if (isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked. You cannot post jobs.", 403));
+  }
+  
   // Both Students and Professors can post jobs
   if (role !== "Student" && role !== "Professor") {
     return next(
@@ -162,7 +178,13 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getMyJobs = catchAsyncErrors(async (req, res, next) => {
-  const { role } = req.user;
+  const { role, isBlocked } = req.user;
+  
+  // Check if user is blocked
+  if (isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked. You cannot access your jobs.", 403));
+  }
+  
   // Only Students and Professors can view their posted jobs
   if (role !== "Student" && role !== "Professor") {
     return next(
@@ -177,7 +199,13 @@ export const getMyJobs = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const updateJob = catchAsyncErrors(async (req, res, next) => {
-  const { role } = req.user;
+  const { role, isBlocked } = req.user;
+  
+  // Check if user is blocked
+  if (isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked. You cannot update jobs.", 403));
+  }
+  
   if (role !== "Student" && role !== "Professor") {
     return next(
       new ErrorHandler("Only Students and Professors can update jobs.", 400)
@@ -265,7 +293,13 @@ export const updateJob = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const deleteJob = catchAsyncErrors(async (req, res, next) => {
-  const { role } = req.user;
+  const { role, isBlocked } = req.user;
+  
+  // Check if user is blocked
+  if (isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked. You cannot delete jobs.", 403));
+  }
+  
   if (role !== "Student" && role !== "Professor") {
     return next(
       new ErrorHandler("Only Students and Professors can delete jobs.", 400)
@@ -299,11 +333,23 @@ export const deleteJob = catchAsyncErrors(async (req, res, next) => {
 
 export const getSingleJob = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
+  
+  // Check if the requesting user is blocked (if authenticated)
+  if (req.user && req.user.isBlocked) {
+    return next(new ErrorHandler("Your account has been blocked. You cannot view jobs.", 403));
+  }
+  
   try {
-    const job = await Job.findById(id).populate('postedBy', 'firstName lastName email role');
+    const job = await Job.findById(id).populate('postedBy', 'firstName lastName email role isBlocked');
     if (!job) {
       return next(new ErrorHandler("Job not found.", 404));
     }
+    
+    // Check if the job poster is blocked
+    if (job.postedBy.isBlocked) {
+      return next(new ErrorHandler("This job posting is no longer available.", 404));
+    }
+    
     res.status(200).json({
       success: true,
       job,
