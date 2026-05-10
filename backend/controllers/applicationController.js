@@ -53,6 +53,10 @@ export const applyForJob = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Job not found!", 404));
   }
 
+  if (jobDetails.postedBy.toString() === req.user._id.toString()) {
+    return next(new ErrorHandler("You cannot apply to a job you posted yourself.", 400));
+  }
+
   // Get the job poster's details
   const jobPoster = await User.findById(jobDetails.postedBy);
   if (!jobPoster) {

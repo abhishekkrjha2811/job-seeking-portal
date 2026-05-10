@@ -79,6 +79,11 @@ const SignUpForm = () => {
         dispatch(verifyEmail(otp, signupData, navigate));
         setShowOtpModal(false);
     }
+
+    const yearFieldLabel = accountType === "Student" ? "Passout Year" : "Joining Year";
+    const yearFieldPlaceholder =
+        accountType === "Student" ? "Enter Passout Year (e.g., 2023)" : "Enter Joining Year (e.g., 2023)";
+
     return (
         // <div></div>
         <form onSubmit={submitHandler} className=" w-full mb-4">
@@ -154,7 +159,7 @@ const SignUpForm = () => {
 
                 <label className="flex flex-col gap-3 mb-3 w-[50%]">
                     <div className="flex flex-row gap-1">
-                        <p> Passout Year</p>
+                        <p>{yearFieldLabel}</p>
                         <div className="text-red-500">*</div>
                     </div>
                     <input
@@ -163,7 +168,7 @@ const SignUpForm = () => {
                         name="year"
                         value={formData.year}
                         id="year"
-                        placeholder="Enter Year (e.g., 2023)"
+                        placeholder={yearFieldPlaceholder}
                         onChange={changeHandler}
                         className="border-2 border-richblack-900 p-3 rounded-[7px] shadow-[0_1px_0_0_#ffffff]"
                     />
@@ -234,13 +239,13 @@ const SignUpForm = () => {
                             id="createPassword"
                             placeholder="Enter Password"
                             onChange={changeHandler}
-                            className="border-2 border-richblack-900 p-3 rounded-[7px] shadow-[0_1px_0_0_#ffffff] w-full"
+                            className="border-2 border-richblack-900 p-3 pr-12 rounded-[7px] shadow-[0_1px_0_0_#ffffff] w-full"
                         />
                         <span
                             onClick={() => setShowCreatePassword(!showCreatePassword)}
-                            className="absolute transform translate-y-1/2 top-[10px] left-[220px]"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-slate-600 hover:text-emerald-600 transition-colors"
                         >
-                            {showCreatePassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                            {showCreatePassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
                         </span>
                     </div>
                 </label>

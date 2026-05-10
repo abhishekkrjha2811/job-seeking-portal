@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllJobs } from "../services/operations/jobAPI";
 import ApplicationModal from "../components/common/ApplicationModal";
 import { FaBriefcase, FaMapMarkerAlt, FaMoneyBillWave, FaCalendarAlt, FaBuilding, FaSearch, FaFilter, FaInfoCircle, FaClock, FaCheckCircle, FaUser, FaUserTie } from "react-icons/fa";
@@ -7,6 +7,7 @@ import "../App.css";
 
 const AllJobs = () => {
     const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.profile);
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showSkeleton, setShowSkeleton] = useState(false);
@@ -83,6 +84,12 @@ const AllJobs = () => {
     const handleApplyNow = (job) => {
         setSelectedJob(job);
         setIsModalOpen(true);
+    };
+
+    const isOwnJob = (job) => {
+        if (!user) return false;
+        const postedById = job.postedBy?._id || job.postedBy?.user || job.postedBy;
+        return postedById?.toString?.() === user._id?.toString?.();
     };
 
     const handleCloseModal = () => {
@@ -290,15 +297,15 @@ const AllJobs = () => {
                                         </a>
                                         <button
                                             className={`flex-1 py-2.5 px-4 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
-                                                job.expired
+                                                job.expired || isOwnJob(job)
                                                     ? "bg-slate-300 text-slate-500 cursor-not-allowed"
                                                     : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 shadow-md hover:shadow-lg"
                                             }`}
                                             onClick={() => handleApplyNow(job)}
-                                            disabled={job.expired}
+                                            disabled={job.expired || isOwnJob(job)}
                                         >
                                             <FaBriefcase />
-                                            {job.expired ? "Closed" : "Apply"}
+                                            {job.expired ? "Closed" : isOwnJob(job) ? "Your Job" : "Apply"}
                                         </button>
                                     </div>
                                 </div>

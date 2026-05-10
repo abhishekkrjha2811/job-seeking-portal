@@ -19,10 +19,12 @@ app.use(
     cors({
         origin: [
             process.env.FRONTEND_URI,
+            "*",
             "http://localhost:3000",
             "http://localhost:5173",
             "http://192.168.0.101:3000",
             "http://192.168.0.105:3000",
+            "https://nexus-major-project.vercel.app"
         ],
         methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true,

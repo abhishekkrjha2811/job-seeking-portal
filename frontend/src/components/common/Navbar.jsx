@@ -17,7 +17,7 @@ const Navbar = () => {
         <div className="flex items-center justify center bg-white h-14 w-full p-2 fixed z-50">
             <div className="flex flex-row justify-between w-full h-10 items-center">
                 {/* div 1 -> logo */}
-                <Link className="flex h-8  items-center" to="/">
+                <Link className="flex h-8 items-center cursor-pointer" to="/">
                     <img src={logo} alt="NEXWORK" className="w-48" />
                 </Link>
                 {/* div 2 -> navbar links */}
@@ -25,8 +25,10 @@ const Navbar = () => {
                     {navLinks
                         .filter((link) => (user ? link.status === "loggedIn" : link.status === "loggedOut"))
                         .map((link, index) => (
-                            <Link to={link.linkTo} key={index}>
-                                <button className={`${matchRoute(link.linkTo) ? "text-cyan-600" : "text-richblack-900"}`}>
+                            <Link to={link.linkTo} key={index} className="cursor-pointer">
+                                <button
+                                    className={`${matchRoute(link.linkTo) ? "text-cyan-600" : "text-richblack-900"} cursor-pointer`}
+                                >
                                     {link.title}
                                 </button>
                             </Link>
@@ -35,9 +37,9 @@ const Navbar = () => {
                 {/* div 3 -> login and signup buttons if logged out / welcome message and profile dropdown is logged in */}
                 <div className="text-white flex flex-row gap-3 items-center">
                     {token === null && (
-                        <Link to="/Login">
+                        <Link to="/Login" className="cursor-pointer">
                             <button
-                                className={`py-2 px-3 rounded-xl text-black hover:bg-blue-5 ${
+                                className={`py-2 px-3 rounded-xl text-black hover:bg-blue-5 cursor-pointer ${
                                     matchRoute("/login") ? "border-1 border-white" : ""
                                 }`}
                             >
@@ -46,8 +48,10 @@ const Navbar = () => {
                         </Link>
                     )}
                     {token === null && (
-                        <Link to="/Signup">
-                            <button className={`bg-cyan-600 py-2 px-3 rounded-xl ${matchRoute("/signup") ? "border-1 border-white" : ""}`}>
+                        <Link to="/Signup" className="cursor-pointer">
+                            <button
+                                className={`bg-cyan-600 py-2 px-3 rounded-xl cursor-pointer ${matchRoute("/signup") ? "border-1 border-white" : ""}`}
+                            >
                                 Signup
                             </button>
                         </Link>
