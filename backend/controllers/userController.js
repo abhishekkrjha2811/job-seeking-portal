@@ -158,6 +158,11 @@ export const login = catchAsyncErrors(async (req, res, next) => {
       new ErrorHandler(`User with provided email and ${role} not found!`, 404)
     );
   }
+
+  if (!user.isVerified) {
+    return next(new ErrorHandler("Please verify your email before logging in.", 403));
+  }
+
   sendToken(user, 201, res, `User Logged In with role ${role} !`);
 });
 
@@ -166,6 +171,8 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
     .status(201)
     .cookie("token", "", {
       httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
       expires: new Date(Date.now()),
     })
     .json({

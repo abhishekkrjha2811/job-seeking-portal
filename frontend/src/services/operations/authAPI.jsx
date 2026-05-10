@@ -97,6 +97,7 @@ export function verifyEmail(otp, signupData, navigate) {
     return async (dispatch) => {
         const toastId = toast.loading("Verifying...");
         dispatch(setLoading(true));
+        let result = null;
         try {
             const response = await apiConnector("POST", VERIFY_EMAIL_API, {
                 otp,
@@ -109,13 +110,25 @@ export function verifyEmail(otp, signupData, navigate) {
             }
 
             toast.success("Email Verified Successfully");
-            navigate("/login");
+
+            dispatch(setToken(response.data.token));
+            dispatch(setUser(response.data.user));
+
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+
+            navigate("/dashboard/my-profile");
+            result = response.data;
         } catch (error) {
             console.log("VERIFY EMAIL API ERROR............", error);
             toast.error(error?.response?.data?.message || "Verification Failed");
+            result = null;
+        } finally {
+            dispatch(setLoading(false));
+            toast.dismiss(toastId);
         }
-        dispatch(setLoading(false));
-        toast.dismiss(toastId);
+
+        return result;
     };
 }
 
