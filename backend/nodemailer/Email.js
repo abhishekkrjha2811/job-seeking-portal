@@ -8,11 +8,13 @@ import {
 } from "./EmailTemplate.js";
 import { Job_Alert_Email_Template } from "./JobAlertTemplate.js";
 
+const EMAIL_FROM = process.env.EMAIL_FROM || '"Nexus Portal" <no-reply@example.com>';
+
 
 export const sendVerificationEamil=async(email,verificationCode)=>{
     try {
      const response=   await transporter.sendMail({
-            from: '"Nexus Portal " <abhishek@gmail.com>',
+            from: EMAIL_FROM,
 
             to: email, // list of receivers
             subject: "Verify your Email", // Subject line
@@ -27,7 +29,7 @@ export const sendVerificationEamil=async(email,verificationCode)=>{
 export const sendWelcomeEmail=async(email,name)=>{
     try {
      const response=   await transporter.sendMail({
-            from: '"Nexus Portal " <abhishek@gmail.com>',
+            from: EMAIL_FROM,
 
             to: email, // list of receivers
             subject: "Welcome Email", // Subject line
@@ -66,7 +68,7 @@ export const ApplicationStatus = async(email, applicantName, jobTitle, companyNa
             .replace("{statusMessage}", statusMessage);
 
         const response = await transporter.sendMail({
-            from: '"Nexus Portal " <abhishek@gmail.com>',
+            from: EMAIL_FROM,
             to: email,
             subject: `Application Status Update - ${status}`,
             text: `Your application status for ${jobTitle} has been updated to: ${status}`,
@@ -90,7 +92,7 @@ export const sendInterviewInvitation = async(email, candidateName, jobTitle, com
             .replace("{meetingLink}", meetingLink); // Replace twice as it appears twice
 
         const response = await transporter.sendMail({
-            from: '"Nexus Portal " <abhishek@gmail.com>',
+            from: EMAIL_FROM,
             to: email,
             subject: `Interview Invitation - ${jobTitle}`,
             text: `You have been invited for an interview for ${jobTitle} on ${interviewDate}`,
@@ -114,7 +116,7 @@ export const sendJobPostedConfirmation = async(email, posterName, jobTitle, cate
             .replace("{jobViewLink}", jobViewLink);
 
         const response = await transporter.sendMail({
-            from: '"Nexus Portal " <abhishek@gmail.com>',
+            from: EMAIL_FROM,
             to: email,
             subject: `Job Posted Successfully - ${jobTitle}`,
             text: `Your job posting for ${jobTitle} is now live!`,
@@ -180,7 +182,7 @@ export const NotifyAll = async(
             .replace("{applyLink}", "http://localhost:5173/jobs"); // Update with your actual frontend URL
 
         const response = await transporter.sendMail({
-            from: '"Nexus Portal 🎓" <abhishek@gmail.com>',
+            from: EMAIL_FROM,
             bcc: recipientEmails, // Use BCC for bulk emails
             subject: `🚀 New Job Alert: ${jobTitle} | Apply Now!`,
             text: `New Job Posted: ${jobTitle} by ${posterName}. Salary: ${salary}. Location: ${fullLocation}. Apply now!`,
